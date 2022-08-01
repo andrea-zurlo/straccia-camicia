@@ -1,83 +1,48 @@
-import random
-import matplotlib.pylab as plt
+from itertools import permutations
+import datetime, time
+import math
 
-class Mazzo(list):
-    def __init__(self, *args):
-        list.__init__(self, *args)
-        self.semi = ['B','C','D','S']
-        self.numeri = [str(i) for i in range(1,11)]
+l = range(40)
 
-        for s in self.semi:
-            for n in self.numeri:
-                self.append(s+n)
+i = 0
+N = 10
+start_time = time.time()
 
-    def mescola(self):
-        random.shuffle(self)
+for c in permutations(l, 12):
+    i+=1
+    # print(c)
+    if i == N: break
 
-# le carte piu in basso sono quelle all'inizio della lista,
-# vengono giocate prima quelle alla fine della lista
+# t = time.time() - start_time
+# print("--- %s seconds ---" % (t))
 
-class Gioco():
-    def __init__(self):
-        self.mazzo = Mazzo()
-        self.mazzo.mescola()
-        self.mani = {'g1': self.mazzo[:20], 'g2': self.mazzo[20:]}
-        self.piatto = []
-        self.giocatore = 'g1'
-        self.altro = 'g2'
-        self.mossa = 0
+# n_combs = math.factorial(40)/(math.factorial(12)*math.factorial(40-12))
+# total_time = n_combs * t / N
+# print(datetime.timedelta(seconds = total_time))
 
-    def gioca(self, n = 0, cambia_giocatore = False):
-        self.mossa += 1
-        if cambia_giocatore:
-            if self.giocatore == 'g1':
-                self.giocatore = 'g2'
-                self.altro = 'g1'
-            elif self.giocatore == 'g2':
-                self.giocatore = 'g1'
-                self.altro = 'g2'
-        
-        if len(self.mani[self.giocatore]) == 0:
-            self.mani[self.altro] = self.piatto + self.mani[self.altro]
-            # print(self.altro+' vince')
-            # print(self.mani)
-            return
+def unique_permutations(iterable, r=None):
+    # https://stackoverflow.com/questions/6284396/permutations-with-unique-values
+    previous = tuple()
+    for p in permutations(sorted(iterable), r):
+        if p > previous:
+            previous = p
+            yield p
 
-        self.piatto.append(self.mani[self.giocatore].pop())
-        carta = self.piatto[-1]
-        # print(str(self.mossa)+' - '+self.giocatore+': '+carta)
+combs = []
+for p in unique_permutations('123'*4, 12):
+    print(p)
+    combs.append(p)
 
-        if carta[-1] == '1':
-            self.gioca(1, True)
-        elif carta[-1] == '2':
-            self.gioca(2, True)
-        elif carta[-1] == '3':
-            self.gioca(3, True)
-        else:
-            if n!= 0:
-                if n == 1:
-                    # print('piatto: ', self.piatto)
-                    # print(self.altro, self.mani[self.altro])
-                    self.mani[self.altro] = self.piatto + self.mani[self.altro]
-                    # print('altro + piatto: ', self.mani[self.altro])
-                    # print(self.giocatore, self.mani[self.giocatore])
-                    self.piatto = []
-                    self.gioca(0, True)
-                else:
-                    self.gioca(n-1, False)
-            else:    
-                self.gioca(0, True)
+print(len(combs))
 
-                
-l = []            
+'''
+numero di possibili modi per disporre le carte che prendono nel mazzo
+N1 = 40! /( 12! * (40-12)! ) = 5586853480
 
+numero di permutazioni distinte per ordinare le 12 carte che prendono
+N2 = 34650
 
-for _ in range(1000):
-    sc = Gioco()
-    # print('g1: '+str(sc.mani['g1']))
-    # print('g2: '+str(sc.mani['g2']))
-    sc.gioca()
-    l.append(sc.mossa)
+numero di mazzi distini
+N = 193584473082000 = 1.9358e+14
 
-n, bins, patches = plt.hist(l, 100)
-plt.show()
+'''

@@ -93,41 +93,16 @@ class Gioco():
             #print(str(self.numero_mossa)+' - '+self.g_attivo.nome+': perde')
             self.fine = True                
 
-'''
-l = []
-mosse = 0
-while True:
-    g = Gioco()
-    #g.valori_iniziali()
-    while not g.fine:
-        g.gioca_mano()
-    mosse = g.numero_mossa
-    if mosse > 1500:
-        print(mosse)
-        g.valori_iniziali()
-        break
-'''
-'''
-mazzo = Mazzo()
-mosse = 0
-set = []
-for i, m in enumerate(itertools.permutations(mazzo)):
-    g = Gioco(list(m))
-    while not g.fine:
-        g.gioca_mano()
-    if g.numero_mossa > mosse:
-        mosse = g.numero_mossa
-        print(str(i)+' '+str(mosse))
-        set = g.mazzo
-'''
+
 mosse = 0
 i = 0
 while True:
     i += 1
-    print('* ', end='')
     g = Gioco()
     while not g.fine:
         g.gioca_mano()
     if g.numero_mossa > mosse:
         mosse = g.numero_mossa
-        print('\n'+str(i)+' '+str(mosse))
+        print('\n'+str(i)+' '+str(mosse)+' '+str(g.mazzo))
+
+# 2009 C5 C9 B3 C10 B8 B9 D10 D6 S1 D8 D3 D5 S5 B6 C7 S2 D2 B4 C6 S10 B7 D4 S6 S7 D7 B5 C3 D9 C8 S9 B1 S8 C2 C1 D1 S3 C4 B10 S4 B2
