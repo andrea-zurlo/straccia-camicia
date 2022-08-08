@@ -42,11 +42,13 @@ class Gioco():
         if mescola: self.mazzo.mescola()
         self.g1 = Giocatore(self.mazzo[:20], 'g1')
         self.g2 = Giocatore(self.mazzo[20:], 'g2')
+        self.giocatori = [self.g1, self.g2]
         self.piatto = Piatto()
         self.g_attivo = self.g1
         self.g_inattivo = self.g2
         self.numero_mossa = 0
         self.fine = False
+        self.attivo = False
     
     def valori_iniziali(self):
         print(self.mazzo)
@@ -57,12 +59,13 @@ class Gioco():
         print()
         
     def scambia_giocatore(self):
-        if self.g_attivo == self.g1:
-            self.g_attivo = self.g2
-            self.g_inattivo = self.g1
-        elif self.g_attivo == self.g2:
-            self.g_attivo = self.g1
-            self.g_inattivo = self.g2
+        # if self.g_attivo == self.g1:
+        #     self.g_attivo = self.g2
+        #     self.g_inattivo = self.g1
+        # elif self.g_attivo == self.g2:
+        #     self.g_attivo = self.g1
+        #     self.g_inattivo = self.g2
+        self.g_attivo, self.g_inattivo = self.g_inattivo, self.g_attivo
     
     def consegna_piatto(self):
         self.g_inattivo.mano = self.piatto + self.g_inattivo.mano
